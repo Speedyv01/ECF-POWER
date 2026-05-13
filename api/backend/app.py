@@ -14,12 +14,14 @@ ml_src_path = project_root / "ml" / "src"
 
 sys.path.append(str(ml_src_path))
 
+""" Bloc utilisé lors du test, à supprimer si pas de PP séparé du modèle
 try:
     from preprocessing_utils import preprocess_ecs_column
 
     print("✅ Module de preprocessing chargé avec succès")
 except ImportError as e:
     print(f"❌ Erreur d'importation : {e}")
+"""
 
 app = FastAPI()
 
@@ -69,21 +71,25 @@ def predict_dpe(data: dict):
 @app.post("/predict_conso")
 def predict_conso(data: dict):
     if not data["conso_jour"]:
+        # Si le user n'a pas fait d'estimation, on met à zéro
+        # pour éviter les erreurs de calcul
         conso_jour = 0
     else:
         conso_jour = data["conso_jour"]
 
-    # 1. Récupération météo
+    # 1. Récupération prévis météo + durée ensoleillement
     forecast = get_forecast(data["zipcode"], data["api_key"])
     city_name = forecast["city"]["name"]
     meteo = merge_weather_sun(forecast)
 
     # 2. Prédictions itératives
+    # On Transforme le dataframe en dictionnaire pour le parcourir
     meteo_dict_list = []
     for _, row in meteo.iterrows():
         ligne = row.to_dict()
+        # Prediction désactivé pour les tests
         # res_predict = predict("Conso", ligne)
-        res_predict = {"prediction": 1}
+        res_predict = {"prediction": 1}  # Ligne à supprimer en prod
         ligne["Conso_Estimee"] = res_predict["prediction"] * conso_jour
 
         meteo_dict_list.append(ligne)
@@ -99,8 +105,15 @@ def predict_conso(data: dict):
             "MOYENNE_HUMIDITES_RELATIVES_HORAIRES": "Humidité moyenne",
             "TEMP_MIN_SOUS_ABRI": "T° min",
             "TEMP_MAX_SA": "T° max",
-            "Conso_Estimee": "Conso"
+            "Conso_Estimee": "Conso",
         }
     )
+    # On formate les colonnes numériques à 2 décimales pour l'affichage
+    columns_to_round = ["T° moyenne", "Humidité moyenne", "T° min", "T° max", "Conso"]
+    for col in columns_to_round:
+        df_result[col] = df_result[col].apply(
+            lambda x: round(x, 2) if pd.notnull(x) else None
+        )
+    # On a toujours la colonne durée dans notre df mais on ne l'affichera pas
 
     return {"city_name": city_name, "predictions": df_result.to_dict(orient="records")}
