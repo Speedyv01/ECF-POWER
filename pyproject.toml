@@ -12,7 +12,6 @@ dependencies = [
     "pandas",
     "scikit-learn",
     "joblib",
-    "mlflow",
 ]
 
 [project.optional-dependencies]
@@ -23,6 +22,7 @@ dev = [
     "ipykernel",
     "httpx",
     "requests-mock",
+    "pytest",
     "fastapi",
     "requests",
 ]
@@ -40,12 +40,11 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "S"]
-ignore = ["N803", "N806"]
+ignore = ["N803", "N806", "F401"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
-"src/preprocessing_mappings.py" = ["E501"]
 
 [tool.black]
 line-length = 88

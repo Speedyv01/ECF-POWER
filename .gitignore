@@ -3,16 +3,23 @@
 venv/
 __pycache__/
 *.pyc
+*.py[cod]
+*$py.class
 
 # Données et modèles locaux
 data/
 models/
 *.pkl
 *.joblib
+*.csv
+!pyproject.toml
 
 # Autoriser les données de test
 !tests/data/
 !tests/data/*.csv
+
+#ML Artifacts 
+ML_CONSO_regression/mlruns/
 
 # Ignorer les métadonnées de packaging
 *.egg-info/
@@ -23,8 +30,8 @@ models/
 
 # Système / IDE
 .vscode/
-.DS_Store.venv/
-__pycache__/
+.DS_Store
+.venv/
 .pytest_cache/
 .ruff_cache/
-.artifacts/*.joblib
+artifacts/*.joblib
