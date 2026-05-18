@@ -1,0 +1,28 @@
+[project]
+name = "ml-conso-regression"
+version = "0.1.0"
+description = "Projet de régression de consommation électrique"
+readme = "README.md" # Assurez-vous d'avoir un fichier README.md
+requires-python = ">=3.9" # Ajustez si votre version de Python est différente
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Ou la licence de votre choix
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas",
+    "scikit-learn",
+    "mlflow>=2.10.0",
+    "joblib",
+    "numpy",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"] # Indique à setuptools de chercher les packages dans le dossier 'src'
+
+[tool.pytest.ini_options]
+pythonpath = ["src"] # Aide pytest à trouver les modules dans 'src'
