@@ -1,16 +1,9 @@
+pytest
+ruff
+black
+bandit
 pandas
 scikit-learn
-joblib
-xgboost
-
-# Testing
-pytest>=7.0
-pytest-cov>=4.0
-
-# Code quality
-ruff>=0.1.0
-black>=23.0
-bandit>=1.7
-
-# Security
-pip-audit>=2.4
+fastapi
+uvicorn
+streamlit

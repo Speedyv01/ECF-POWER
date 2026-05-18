@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+<<<<<<< HEAD
+name = "ml_filrouge_project"
+version = "0.1.0"
+description = "Pipeline de prédiction de consommation énergétique"
+=======
+name = "ml_housing"
+version = "0.1.0"
+description = "Pipeline de prédiction de prix immobiliers"
+>>>>>>> ce70e4ce56480c98e09c0b3e1f2434f8ce0f088d
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "scikit-learn",
+    "joblib",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "ipykernel",
+    "httpx",
+<<<<<<< HEAD
+    "requests-mock",
+=======
+    "pytest",
+    "fastapi",
+    "requests",
+>>>>>>> ce70e4ce56480c98e09c0b3e1f2434f8ce0f088d
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "S"]
+<<<<<<< HEAD
+ignore = ["N803", "N806"]
+=======
+ignore = ["N803", "N806", "F401"]
+>>>>>>> ce70e4ce56480c98e09c0b3e1f2434f8ce0f088d
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.bandit]
+targets = ["src"]
+<<<<<<< HEAD
+exclude_dirs = ["mon_env", "tests", ".venv", "venv"]
+=======
+# Exclure le répertoire de l'environnement virtuel et les fichiers de test
+exclude_dirs = ["mon_env", "tests", ".venv", "venv"]
+# B101 est ignoré dans les fichiers de test, mais si vous aviez du code de production
+# où vous vouliez l'ignorer, vous pourriez l'ajouter ici.
+>>>>>>> ce70e4ce56480c98e09c0b3e1f2434f8ce0f088d
