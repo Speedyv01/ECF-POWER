@@ -170,5 +170,6 @@ else {
     Write-Host "pip-audit ignore a la demande." -ForegroundColor DarkYellow
 }
 
-Write
+Write-Section "Termine"
+Write-Host "Tous les controles demandes sont passes avec succes." -ForegroundColor Green
 Write-Host "Tu peux push en confiance." -ForegroundColor Green

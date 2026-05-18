@@ -5,10 +5,10 @@ from typing import Iterable, Tuple
 import pandas as pd
 
 from src.config import (
-    DATA_DIR,
     ARTIFACTS_DIR,
-    MODELS_DIR,
+    DATA_DIR,
     METRICS_DIR,
+    MODELS_DIR,
     PREPROCESSORS_DIR,
 )
 
@@ -60,7 +60,10 @@ def validate_model_columns(df: pd.DataFrame) -> None:
 
 
 def validate_training_columns(df: pd.DataFrame) -> None:
-    """Alias pour validate_model_columns - Vérifie les colonnes requises pour l'entraînement."""
+    """Alias pour validate_model_columns.
+
+    Vérifie les colonnes requises pour l'entraînement.
+    """
     return validate_model_columns(df)
 
 

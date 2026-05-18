@@ -1,0 +1,24 @@
+{
+    "model_name": "random_forest",
+    "model_path": "C:\\Users\\chris\\Desktop\\ml-filrouge-project - v3\\.pytest_tmp\\test_train_creates_production_bundle\\modele.pkl",
+    "best_metrics": {
+        "r2": -1369.1510245730944,
+        "mae": 9065.5,
+        "rmse": 9068.810023922653
+    },
+    "all_metrics": {
+        "random_forest": {
+            "r2": -1369.1510245730944,
+            "mae": 9065.5,
+            "rmse": 9068.810023922653
+        }
+    },
+    "feature_importances": {
+        "etiquette_dpe": 0.0,
+        "surface_habitable_logement": 0.0,
+        "type_batiment": 0.0,
+        "type_generateur_n1_ecs_n1": 0.0,
+        "annee_construction": 0.0,
+        "qualite_isolation_enveloppe": 0.0
+    }
+}

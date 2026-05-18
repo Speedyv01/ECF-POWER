@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/chris/Desktop/ml-filrouge-project%20-%20v3/mlruns/820239726484371378/4b293e725a1745a68d8362897e3ccda7/artifacts
+end_time: 1779111848386
+entry_point_name: ''
+experiment_id: '820239726484371378'
+lifecycle_stage: active
+run_id: 4b293e725a1745a68d8362897e3ccda7
+run_name: random_forest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1779111848213
+status: 3
+tags: []
+user_id: chris

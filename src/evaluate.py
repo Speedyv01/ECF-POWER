@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import joblib
 import pandas as pd
-
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from src.config import get_production_model_path
 from src.features import split_features_target

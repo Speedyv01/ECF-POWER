@@ -1,8 +1,9 @@
-import pandas as pd
-import pytest
 import shutil
 import sys
 from pathlib import Path
+
+import pandas as pd
+import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:

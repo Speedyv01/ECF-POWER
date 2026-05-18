@@ -1,19 +1,23 @@
 from __future__ import annotations
 
 import json
-import joblib
-import numpy as np
 
+import joblib
+import mlflow
+import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from src.config import (
-    get_production_model_path,
-    get_latest_model_info_path,
+    DEFAULT_MODEL_NAME,
     METRICS_DIR,
+    MLFLOW_EXPERIMENT_NAME,
+    MLFLOW_TRACKING_URI,
+    get_latest_model_info_path,
+    get_production_model_path,
 )
-from src.preprocessing import preprocess_pipeline
 from src.features import split_features_target
+from src.preprocessing import preprocess_pipeline
 
 # ============================================================
 # 1. Extraction des features importantes
@@ -56,7 +60,7 @@ def train(df):
     print("\n🌲 Entraînement du RandomForest...")
 
     model = RandomForestRegressor(
-        n_estimators=300, max_depth=12, random_state=42, n_jobs=-1
+        n_estimators=300, max_depth=12, min_samples_split=5, random_state=42, n_jobs=-1
     )
 
     model.fit(X_train, y_train)
@@ -119,6 +123,34 @@ def train(df):
             indent=4,
             ensure_ascii=False,
         )
+
+        # -----------------------------
+    # Log MLflow (compatible Windows)
+    # -----------------------------
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+    # Désactive explicitement le Model Registry (obligatoire en local)
+    mlflow.set_registry_uri("none")
+
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
+
+    with mlflow.start_run(run_name=DEFAULT_MODEL_NAME):
+        mlflow.log_params(
+            {
+                "model_type": "RandomForestRegressor",
+                "n_estimators": 300,
+                "max_depth": 12,
+                "min_samples_split": 5,
+                "random_state": 42,
+            }
+        )
+
+        mlflow.log_metrics(metrics)
+
+        # Artifacts
+        mlflow.log_artifact(str(feature_importances_path))
+        mlflow.log_artifact(str(model_path))
+        mlflow.log_artifact(str(latest_info_path))
 
     print(f"📄 Infos sauvegardées dans : {latest_info_path}")
 
