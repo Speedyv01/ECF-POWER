@@ -35,6 +35,15 @@ annee_construction = st.slider(
     value=1950,
     step=1,
 )
+qualite_isolation_enveloppe = st.selectbox(
+    "Qualité de l'isolation du logement",
+    [
+        "moyenne",
+        "insuffisante", 
+        "bonne", 
+        "très bonne"
+    ],
+)
 
 # Premier bouton: appelle predict_DPE
 if st.button("Calculer l'estimation", type="primary"):
@@ -44,6 +53,7 @@ if st.button("Calculer l'estimation", type="primary"):
         "type_batiment": type_batiment,
         "type_generateur_n1_ecs_n1": type_generateur_n1_ecs_n1,
         "annee_construction": annee_construction,
+        "qualite_isolation_enveloppe": qualite_isolation_enveloppe
     }
 
     try:
@@ -65,6 +75,7 @@ st.subheader("Saisissez vos identifiants pour obtenir l'évolution de votre cons
 zipcode = st.text_input("📫 Code postal", value="75014")  # CP Observatoire de Paris
 api_key = st.text_input("🔐 Entrez votre clé API OpenWeatherMap", type="password")
 
+#Deuxième bouton: appelle predict_conso
 if st.button("Obtenir l'évolution", type="primary"):
     if not api_key:  # Pas de clé, on affiche une erreur
         st.error("Veuillez entrer votre clé API OpenWeatherMap.")
