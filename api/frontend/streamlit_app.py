@@ -5,16 +5,17 @@ import streamlit as st
 
 prediction = 0  # Variable globale pour stocker la prédiction de conso annuelle
 
-#Premier bloc: prédiction conso selon caractéristiques logement (modèle DPE)
+# Premier bloc: prédiction conso selon caractéristiques logement (modèle DPE)
 st.title(" :house: :green[Prédiction de la consommation énergétique d'un logement]")
 st.subheader("Saisissez les caractéristiques du logement pour obtenir une estimation.")
 
 
 etiquette_dpe = st.selectbox(
-    "🏷️ Étiquette DPE", 
-    ["C", "A", "B", "D", "E", "F", "G"]) #C en premier par défaut
+    "🏷️ Étiquette DPE", ["C", "A", "B", "D", "E", "F", "G"]
+)  # C en premier par défaut
 surface_habitable = st.slider(
-    "📏 Surface en m²", min_value=0, max_value=1000, step=1, value=50)
+    "📏 Surface en m²", min_value=0, max_value=1000, step=1, value=50
+)
 type_batiment = st.selectbox("🏢Type de logement", ["maison", "appartement"])
 type_generateur_n1_ecs_n1 = st.selectbox(
     "🚿 Type de générateur d'eau chaude sanitaire",
@@ -35,7 +36,7 @@ annee_construction = st.slider(
     step=1,
 )
 
-#Premier bouton: appelle predict_DPE
+# Premier bouton: appelle predict_DPE
 if st.button("Calculer l'estimation", type="primary"):
     payload = {  # Il faut que le nom des variables match ceux du modèle
         "etiquette_dpe": etiquette_dpe,

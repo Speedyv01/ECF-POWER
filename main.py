@@ -1,122 +1,176 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-import argparse
-import pandas as pd
+import json
 
-from src.train import train
-from src.predict import predict
-from src.evaluate import evaluate
+import joblib
+import mlflow
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-DEFAULT_DATASET = "data/dpe_processed_03032026.csv"
+from src.config import (
+    DEFAULT_MODEL_NAME,
+    METRICS_DIR,
+    MLFLOW_EXPERIMENT_NAME,
+    MLFLOW_TRACKING_URI,
+    get_latest_model_info_path,
+    get_production_model_path,
+)
+from src.data import load_raw_data
+from src.features import split_features_target
+from src.preprocessing import preprocess_pipeline
+
+# ============================================================
+# 1. Extraction des features importantes
+# ============================================================
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Pipeline ML Fil Rouge")
+def extract_feature_importances(model, feature_names):
+    if hasattr(model, "feature_importances_"):
+        return dict(zip(feature_names, model.feature_importances_))
+    return {name: None for name in feature_names}
 
-    parser.add_argument(
-        "mode",
-        type=str,
-        nargs="?",
-        choices=["train", "predict", "evaluate"],
-        help="Mode d'exécution : train, predict ou evaluate",
-        default=None,
+
+# ============================================================
+# 2. Entraînement RandomForest
+# ============================================================
+
+
+def train(df):
+
+    # -----------------------------
+    # Sélection des features
+    # -----------------------------
+    X, y = split_features_target(df)
+
+    print("\n=== Features utilisées ===")
+    print(X.columns.tolist())
+    print(f"Nombre de features : {len(X.columns)}")
+
+    # 🔥 Correction : imputation du y
+    y = y.fillna(y.median())
+
+    # -----------------------------
+    # Préprocessing
+    # -----------------------------
+    X_train, X_test, y_train, y_test, preprocessor = preprocess_pipeline(X, y)
+
+    # -----------------------------
+    # Modèle RandomForest
+    # -----------------------------
+    print("\n🌲 Entraînement du RandomForest...")
+
+    model = RandomForestRegressor(
+        n_estimators=300, max_depth=12, min_samples_split=5, random_state=42, n_jobs=-1
     )
 
-    parser.add_argument(
-        "--input",
-        type=str,
-        required=False,
-        help="Chemin vers un fichier CSV",
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+
+    metrics = {
+        "r2": r2_score(y_test, y_pred),
+        "mae": mean_absolute_error(y_test, y_pred),
+        "rmse": np.sqrt(mean_squared_error(y_test, y_pred)),
+    }
+
+    print(f"   → R²   = {metrics['r2']:.4f}")
+    print(f"     MAE  = {metrics['mae']:.4f}")
+    print(f"     RMSE = {metrics['rmse']:.4f}")
+
+    # -----------------------------
+    # Feature importances
+    # -----------------------------
+    feature_importances = extract_feature_importances(model, preprocessor.feature_names)
+
+    feature_importances_path = METRICS_DIR / "feature_importances.json"
+    with open(feature_importances_path, "w", encoding="utf-8") as f:
+        json.dump(feature_importances, f, indent=4, ensure_ascii=False)
+
+    print(f"📊 Feature importances sauvegardées dans : {feature_importances_path}")
+
+    # -----------------------------
+    # Sauvegarde du bundle complet
+    # -----------------------------
+    bundle = {
+        "model": model,
+        "preprocessor": preprocessor,
+        "metadata": {
+            "best_model": "random_forest",
+            "best_metrics": metrics,
+            "all_metrics": {"random_forest": metrics},
+            "feature_importances_path": str(feature_importances_path),
+        },
+    }
+
+    model_path = get_production_model_path()
+    joblib.dump(bundle, model_path)
+
+    print(f"💾 Modèle sauvegardé dans : {model_path}")
+
+    # -----------------------------
+    # Sauvegarde des infos du modèle
+    # -----------------------------
+    latest_info_path = get_latest_model_info_path()
+    with open(latest_info_path, "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "model_name": "random_forest",
+                "model_path": str(model_path),
+                "best_metrics": metrics,
+                "all_metrics": {"random_forest": metrics},
+                "feature_importances": feature_importances,
+            },
+            f,
+            indent=4,
+            ensure_ascii=False,
+        )
+
+    # -----------------------------
+    # Log MLflow (compatible Windows)
+    # -----------------------------
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+    # Désactive explicitement le Model Registry (obligatoire en local)
+    mlflow.set_registry_uri("none")
+
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
+
+    with mlflow.start_run(run_name=DEFAULT_MODEL_NAME):
+        mlflow.log_params(
+            {
+                "model_type": "RandomForestRegressor",
+                "n_estimators": 300,
+                "max_depth": 12,
+                "min_samples_split": 5,
+                "random_state": 42,
+            }
+        )
+
+        mlflow.log_metrics(metrics)
+
+        # Artifacts
+        mlflow.log_artifact(str(feature_importances_path))
+        mlflow.log_artifact(str(model_path))
+        mlflow.log_artifact(str(latest_info_path))
+
+    print(f"📄 Infos sauvegardées dans : {latest_info_path}")
+
+    return (
+        model,
+        preprocessor,
+        {
+            "best_model": "random_forest",
+            "best_metrics": metrics,
+            "all_metrics": {"random_forest": metrics},
+        },
     )
 
-    return parser.parse_args()
 
-
-def read_csv(path: str) -> pd.DataFrame:
-    return pd.read_csv(
-        path,
-        sep=";",
-        decimal=",",
-        encoding="utf-8",
-        engine="python",
-    )
-
-
-def main() -> None:
-    args = parse_args()
-
-    # ---------------------------------------------------------
-    # MODE AUTO (RUN VS CODE)
-    # ---------------------------------------------------------
-    if args.mode is None:
-        print("▶️ Lancement automatique (RUN VS Code détecté)")
-        print(f"📄 Dataset par défaut : {DEFAULT_DATASET}")
-
-        df = read_csv(DEFAULT_DATASET)
-        _, _, metrics = train(df)
-
-        best_metrics = metrics["best_metrics"]
-        print("\n🎉 Entraînement terminé.")
-        print(f"🏆 Meilleur modèle : {metrics['best_model']}")
-        print(f"   R²   : {best_metrics['r2']:.4f}")
-        print(f"   MAE  : {best_metrics['mae']:.4f}")
-        print(f"   RMSE : {best_metrics['rmse']:.4f}")
-        return
-
-    # ---------------------------------------------------------
-    # MODE TRAIN
-    # ---------------------------------------------------------
-    if args.mode == "train":
-        if not args.input:
-            print("❌ Erreur : --input est requis en mode train")
-            return
-
-        print("🚀 Lancement de l'entraînement du modèle...")
-        df = read_csv(args.input)
-        _, _, metrics = train(df)
-
-        best_metrics = metrics["best_metrics"]
-        print("\n🎉 Entraînement terminé.")
-        print(f"🏆 Meilleur modèle : {metrics['best_model']}")
-        print(f"   R²   : {best_metrics['r2']:.4f}")
-        print(f"   MAE  : {best_metrics['mae']:.4f}")
-        print(f"   RMSE : {best_metrics['rmse']:.4f}")
-        return
-
-    # ---------------------------------------------------------
-    # MODE PREDICT
-    # ---------------------------------------------------------
-    if args.mode == "predict":
-        if not args.input:
-            print("❌ Erreur : --input est requis en mode predict")
-            return
-
-        print("🔮 Lancement de la prédiction...")
-        df = read_csv(args.input)
-        y_pred, metadata = predict(df)
-
-        print("\n=== RÉSULTATS ===")
-        print("Prédictions :", y_pred.tolist() if hasattr(y_pred, "tolist") else y_pred)
-        print("Modèle utilisé :", metadata.get("best_model"))
-        return
-
-    # ---------------------------------------------------------
-    # MODE EVALUATE
-    # ---------------------------------------------------------
-    if args.mode == "evaluate":
-        if not args.input:
-            print("❌ Erreur : --input est requis en mode evaluate")
-            return
-
-        print("📊 Évaluation du modèle...")
-        df = read_csv(args.input)
-        metrics = evaluate(df)
-
-        print("\n🎉 Évaluation terminée.")
-        print(f"   R²   : {metrics['r2']:.4f}")
-        print(f"   MAE  : {metrics['mae']:.4f}")
-        print(f"   RMSE : {metrics['rmse']:.4f}")
-        return
+def main(dataset_filename: str = "dpe_processed_03032026.csv") -> None:
+    """Charge les données et entraîne le modèle quand main.py est exécuté."""
+    print("=== Chargement des données ===")
+    df = load_raw_data(dataset_filename)
+    train(df)
 
 
 if __name__ == "__main__":

@@ -1,23 +1,32 @@
 from __future__ import annotations
 
 import unicodedata
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from src.preprocessing_mappings import MAPPING_TYPE_GENERATEUR
 from src.config import RANDOM_STATE, TEST_SIZE
 from src.features import (
     CATEGORICAL_FEATURES,
     NUMERIC_FEATURES,
     TOP_FEATURES,
 )
+from src.preprocessing_mappings import MAPPING_TYPE_GENERATEUR
 
 # ============================================================
 # 1. MAPPINGS CATEGORIELS
 # ============================================================
 
-ETIQUETTE_MAP = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7}
+ETIQUETTE_MAP = {
+    "a": 1,
+    "b": 2,
+    "c": 3,
+    "d": 4,
+    "e": 5,
+    "f": 6,
+    "g": 7,
+}
 TYPE_BATIMENT_MAP = {"appartement": 0, "maison": 1}
 QUALITE_ISO_MAP = {"insuffisante": 1, "moyenne": 2, "bonne": 3, "très bonne": 4}
 

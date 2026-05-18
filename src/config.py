@@ -13,8 +13,8 @@ METRICS_DIR: Path = ARTIFACTS_DIR / "metrics"
 PREPROCESSORS_DIR: Path = ARTIFACTS_DIR / "preprocessors"
 PREDICTIONS_DIR: Path = ARTIFACTS_DIR / "predictions"
 
-# MLflow (si tu veux l’utiliser plus tard)
-MLFLOW_TRACKING_URI: str = "http://localhost:5000"
+# MLflow (utilisation locale par défaut)
+MLFLOW_TRACKING_URI: str = (PROJECT_ROOT / "mlruns").resolve().as_uri()
 MLFLOW_EXPERIMENT_NAME: str = "prediction-energie-logement"
 
 # Paramètres généraux d’entraînement

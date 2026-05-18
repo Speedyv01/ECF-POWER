@@ -2,6 +2,7 @@ pytest
 ruff
 black
 bandit
+mlflow
 pandas
 scikit-learn
 fastapi
