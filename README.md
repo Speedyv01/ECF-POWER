@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-[![CI Pipeline](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml)
+# ECF-POWER
+Dépôt du projet fil rouge POWER formation M2i-FD1125
 
 # Projet ML industrialisé
 
@@ -18,7 +16,3 @@ ruff check .
 black --check .
 bandit -r src -ll
 =======
-# ECF-POWER
-Dépôt du projet fil rouge POWER formation M2i-FD1125
->>>>>>> ce70e4ce56480c98e09c0b3e1f2434f8ce0f088d
->>>>>>> main
