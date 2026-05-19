@@ -3,9 +3,8 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+from backend.call_weather_api import get_forecast, merge_weather_sun
 from fastapi import FastAPI
-
-from api.backend.call_weather_api import get_forecast, merge_weather_sun
 
 # --- 1. Gestion des Chemins et Imports ---
 current_file = Path(__file__).resolve()

@@ -4,7 +4,7 @@ from typing import Iterable, Tuple
 
 import pandas as pd
 
-from src.config import (
+from ML_DPE_regression.src.config import (
     ARTIFACTS_DIR,
     DATA_DIR,
     METRICS_DIR,

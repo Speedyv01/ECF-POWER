@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.preprocessing import ProductionPreprocessor
+from ML_DPE_regression.src.preprocessing import ProductionPreprocessor
 
 
 class MLPipeline:
