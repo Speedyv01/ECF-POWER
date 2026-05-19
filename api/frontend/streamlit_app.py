@@ -110,8 +110,8 @@ if st.button("Obtenir l'évolution", type="primary"):
                 ),
             )
             df = pd.DataFrame(prediction)
-            st.success(f"""### Conso à venir dans les 6 prochains jours : 
-                {df['Conso'].sum():.2f} kWh""")
+            st.success("### Conso à venir dans les 6 prochains jours :")
+            st.success(f"{df['Conso'].sum():.2f} kWh")
         except requests.exceptions.ConnectionError:
             st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
         except Exception as e:

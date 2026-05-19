@@ -43,7 +43,7 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "S"]
-ignore = ["N803", "N806", "F401", "S101"]
+ignore = ["N803", "N806", "F401", "S101", "N999"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
