@@ -7,19 +7,19 @@ __pycache__/
 *$py.class
 
 # Données et modèles locaux
-data/
-models/
 *.pkl
 *.joblib
 *.csv
-!pyproject.toml
 
 # Autoriser les données de test
 !tests/data/
 !tests/data/*.csv
+install_output.txt
 
 #ML Artifacts 
 ML_CONSO_regression/mlruns/
+ML_DPE_regression/mlruns/
+mlruns/
 
 # Ignorer les métadonnées de packaging
 *.egg-info/

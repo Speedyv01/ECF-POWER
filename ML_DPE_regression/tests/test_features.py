@@ -1,6 +1,6 @@
 import pytest
 
-from src.features import (
+from ML_DPE_regression.src.features import (
     TARGET_COLUMN,
     TOP_FEATURES,
     select_features,

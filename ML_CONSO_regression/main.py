@@ -1,22 +1,17 @@
 from pathlib import Path
-import joblib
 
+import joblib
 import mlflow
 import mlflow.sklearn
-
 from src.ml_conso.data import load_data
-
+from src.ml_conso.evaluate import evaluate_model
 from src.ml_conso.features import select_features, split_data
-
 from src.ml_conso.pipeline import (
     activate_model_version,
     build_pipeline,
     export_model_contract,
     save_model_version,
 )
-
-from src.ml_conso.evaluate import evaluate_model
-
 from src.ml_conso.train import log_experiment
 
 
@@ -65,8 +60,8 @@ def main():
 
         log_step("SAUVEGARDE")
 
-        # Remonte de deux niveaux : de main.py -> ML_CONSO_regression -> ECF-POWER
-        artifact_dir = Path(__file__).resolve().parent.parent / "artifacts"
+        # Remonte de un niveau : de main.py -> ML_CONSO_regression
+        artifact_dir = Path(__file__).resolve().parent / "artifacts"
         artifact_dir.mkdir(exist_ok=True)
 
         save_model_version(pipeline, metrics, "current", artifact_dir)

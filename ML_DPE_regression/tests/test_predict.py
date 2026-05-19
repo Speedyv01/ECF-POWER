@@ -1,9 +1,9 @@
 import joblib
 from sklearn.dummy import DummyRegressor
 
-import src.predict as predict_module
-from src.features import split_features_target
-from src.preprocessing import ProductionPreprocessor
+import ML_DPE_regression.src.predict as predict_module
+from ML_DPE_regression.src.features import split_features_target
+from ML_DPE_regression.src.preprocessing import ProductionPreprocessor
 
 
 def test_predict_loads_modele_pkl_bundle(sample_df, workspace_tmp_path, monkeypatch):

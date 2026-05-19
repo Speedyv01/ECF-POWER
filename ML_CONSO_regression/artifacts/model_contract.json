@@ -1,0 +1,14 @@
+{
+    "model_path": "artifacts/models/conso_model_latest.joblib",
+    "metrics_path": "artifacts/metrics/conso_metrics_latest.json",
+    "features": [
+        "DUREE_ENSOLEILLEMENT",
+        "MOYENNE_TEMP_HORAIRES_SA_PONDEREE",
+        "TEMP_MAX_SA",
+        "MOYENNE_HUMIDITES_RELATIVES_HORAIRES",
+        "TEMP_MIN_SOUS_ABRI"
+    ],
+    "target": "evo_conso",
+    "format": "joblib",
+    "usage": "Load in the backend with joblib,\n        expose predictions through an API for the frontend."
+}

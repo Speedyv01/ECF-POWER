@@ -1,5 +1,6 @@
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_FILENAME = "Merge_conso_meteo_soleil_090426.csv"

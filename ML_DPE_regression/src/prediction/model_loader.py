@@ -1,6 +1,6 @@
 import joblib
 
-from src.config import get_production_model_path
+from ML_DPE_regression.src.config import get_production_model_path
 
 
 class ModelLoader:
