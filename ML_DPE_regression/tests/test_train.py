@@ -1,6 +1,6 @@
 import json
 
-import src.train as train_module
+import ML_DPE_regression.src.train as train_module
 
 
 def test_train_creates_production_bundle(sample_df, workspace_tmp_path, monkeypatch):

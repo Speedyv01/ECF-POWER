@@ -1,7 +1,10 @@
 import numpy as np
 
-from src.features import TOP_FEATURES, split_features_target
-from src.preprocessing import ProductionPreprocessor, preprocess_pipeline
+from ML_DPE_regression.src.features import TOP_FEATURES, split_features_target
+from ML_DPE_regression.src.preprocessing import (
+    ProductionPreprocessor,
+    preprocess_pipeline,
+)
 
 
 def test_production_preprocessor_returns_numeric_dataframe(sample_df):

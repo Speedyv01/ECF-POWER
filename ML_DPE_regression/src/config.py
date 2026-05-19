@@ -24,7 +24,7 @@ RANDOM_STATE: int = 42
 # Noms par défaut
 DEFAULT_MODEL_NAME: str = "random_forest"
 DEFAULT_PREPROCESSOR_NAME: str = "preprocessor"
-PRODUCTION_MODEL_FILENAME: str = "modele.pkl"
+PRODUCTION_MODEL_FILENAME: str = "DPE_model_latest.pkl"
 
 
 def create_required_directories() -> None:

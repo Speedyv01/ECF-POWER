@@ -80,7 +80,7 @@ def predict(cat: str, data: dict):
     """Effectue une prédiction et renvoie un dictionnaire."""
     model_obj = get_latest_model(cat)
     df = pd.DataFrame([data])
-    
+
     if cat == "DPE" and isinstance(model_obj, dict):
         # DPE: extract model and preprocessor
         preprocessor = model_obj.get("preprocessor")
@@ -91,7 +91,7 @@ def predict(cat: str, data: dict):
     else:
         # CONSO: direct prediction (pipeline handles preprocessing)
         prediction = model_obj.predict(df)[0]
-    
+
     return {"prediction": float(prediction)}
 
 
@@ -134,8 +134,8 @@ def predict_conso(data: dict):
         ligne = row.to_dict()
         # Prediction désactivé pour les tests
         res_predict = predict("conso", ligne)
-        #res_predict = {"prediction": 1}  # Ligne à supprimer en prod
-        ligne["Conso_Estimee"] = res_predict["prediction"] * conso_jour
+        # res_predict = {"prediction": 1}  # Ligne à supprimer en prod
+        ligne["Conso_Estimee"] = (1 - res_predict["prediction"]) * conso_jour
 
         meteo_dict_list.append(ligne)
 

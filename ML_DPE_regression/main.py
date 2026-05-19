@@ -7,7 +7,6 @@ import mlflow
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-
 from src.config import (
     DEFAULT_MODEL_NAME,
     METRICS_DIR,

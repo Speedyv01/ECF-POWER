@@ -28,7 +28,7 @@ def meteo_journaliere(data: dict):
             {
                 "datetime": entry["dt_txt"],
                 "date": entry["dt_txt"].split(" ")[0],
-                "MOYENNE_TEMP_HORAIRES_SA": entry["main"]["temp"],
+                "MOYENNE_TEMP_HORAIRES_SA_PONDEREE": entry["main"]["temp"],
                 "MOYENNE_HUMIDITES_RELATIVES_HORAIRES": entry["main"]["humidity"],
                 "TEMP_MIN_SOUS_ABRI": entry["main"]["temp_min"],
                 "TEMP_MAX_SA": entry["main"]["temp_max"],
@@ -42,7 +42,10 @@ def meteo_journaliere(data: dict):
     daily = (
         df.groupby("date")
         .agg(
-            MOYENNE_TEMP_HORAIRES_SA=("MOYENNE_TEMP_HORAIRES_SA", "mean"),
+            MOYENNE_TEMP_HORAIRES_SA_PONDEREE=(
+                "MOYENNE_TEMP_HORAIRES_SA_PONDEREE",
+                "mean",
+            ),
             MOYENNE_HUMIDITES_RELATIVES_HORAIRES=(
                 "MOYENNE_HUMIDITES_RELATIVES_HORAIRES",
                 "mean",

@@ -1,9 +1,11 @@
 from datetime import datetime
 
+import pandas as pd
 import requests
 import streamlit as st
 
-prediction = 0  # Variable globale pour stocker la prédiction de conso annuelle
+if "prediction" not in st.session_state:
+    st.session_state.prediction = 0
 
 # Premier bloc: prédiction conso selon caractéristiques logement (modèle DPE)
 st.title(" :house: :green[Prédiction de la consommation énergétique d'un logement]")
@@ -37,12 +39,7 @@ annee_construction = st.slider(
 )
 qualite_isolation_enveloppe = st.selectbox(
     "Qualité de l'isolation du logement",
-    [
-        "moyenne",
-        "insuffisante", 
-        "bonne", 
-        "très bonne"
-    ],
+    ["moyenne", "insuffisante", "bonne", "très bonne"],
 )
 
 # Premier bouton: appelle predict_DPE
@@ -53,7 +50,7 @@ if st.button("Calculer l'estimation", type="primary"):
         "type_batiment": type_batiment,
         "type_generateur_n1_ecs_n1": type_generateur_n1_ecs_n1,
         "annee_construction": annee_construction,
-        "qualite_isolation_enveloppe": qualite_isolation_enveloppe
+        "qualite_isolation_enveloppe": qualite_isolation_enveloppe,
     }
 
     try:
@@ -62,6 +59,8 @@ if st.button("Calculer l'estimation", type="primary"):
         )
         response.raise_for_status()
         prediction = response.json()["prediction"]
+        # Stocker la prédiction dans session_state
+        st.session_state.prediction = prediction
         st.success(f"### Conso annuelle estimée : {prediction:.2f} kWh")
     except requests.exceptions.ConnectionError:
         st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
@@ -75,16 +74,16 @@ st.subheader("Saisissez vos identifiants pour obtenir l'évolution de votre cons
 zipcode = st.text_input("📫 Code postal", value="75014")  # CP Observatoire de Paris
 api_key = st.text_input("🔐 Entrez votre clé API OpenWeatherMap", type="password")
 
-#Deuxième bouton: appelle predict_conso
+# Deuxième bouton: appelle predict_conso
 if st.button("Obtenir l'évolution", type="primary"):
     if not api_key:  # Pas de clé, on affiche une erreur
         st.error("Veuillez entrer votre clé API OpenWeatherMap.")
     else:
         # Si pas de prediction de conso faite, on affiche la météo
-        if prediction == 0:
+        if st.session_state.prediction == 0:
             conso_jour = None
         else:
-            conso_jour = prediction / 365
+            conso_jour = st.session_state.prediction / 365
 
         payload = {"zipcode": zipcode, "api_key": api_key, "conso_jour": conso_jour}
 
@@ -110,6 +109,9 @@ if st.button("Obtenir l'évolution", type="primary"):
                     "Conso",
                 ),
             )
+            df = pd.DataFrame(prediction)
+            st.success(f"""### Conso à venir dans les 6 prochains jours : 
+                {df['Conso'].sum():.2f} kWh""")
         except requests.exceptions.ConnectionError:
             st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
         except Exception as e:
