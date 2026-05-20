@@ -7,17 +7,14 @@ from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
 
 def log_transform(X):
-
     return np.log1p(np.clip(X, a_min=0, a_max=None))
 
 
 def square_transform(X):
-
     return np.power(X, 2)
 
 
 def build_preprocessor():
-
     sunshine_pipeline = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),

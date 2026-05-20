@@ -50,7 +50,8 @@ jobs:
       - name: Install Bandit
         run: pip install bandit
       - name: Run Security Scan
-        run: bandit -r api/ ML_CONSO_regression/src/ ML_DPE_regression/src/ src/
+        run: bandit -r api/backend/ api/frontend/ ML_CONSO_regression/src/ ML_DPE_regression/src/
+
   # 4. Tests unitaires et d'intégration
   tests:
     runs-on: ubuntu-latest
@@ -65,7 +66,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install -e ".[dev]"
+          pip install pytest-cov
       - name: Run Pytest
-        run: pytest -v --cov=api --cov=ML_CONSO_regression --cov=ML_DPE_regression --cov=src
+        run: pytest -v api/tests ML_CONSO_regression/tests ML_DPE_regression/tests --cov=api --cov=ML_CONSO_regression --cov=ML_DPE_regression
+        env:
+          PYTHONPATH: .:ML_CONSO_regression
 

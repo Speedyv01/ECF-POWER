@@ -188,7 +188,6 @@ class ProductionPreprocessor:
 
 
 def preprocess_pipeline(X, y, remove_outliers=True):
-
     missing = [col for col in TOP_FEATURES if col not in X.columns]
     if missing:
         raise ValueError(f"Missing required feature columns: {missing}")

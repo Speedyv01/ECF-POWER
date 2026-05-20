@@ -8,6 +8,7 @@ matplotlib==3.9.2
 
 # ML tracking
 mlflow==2.17.2
+databricks-sdk==0.72.0
 protobuf==4.25.5
 
 # API backend

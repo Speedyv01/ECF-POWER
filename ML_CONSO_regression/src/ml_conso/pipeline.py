@@ -13,7 +13,6 @@ from src.ml_conso.train import build_model
 
 
 def build_pipeline():
-
     preprocessor = build_preprocessor()
 
     model = build_model()

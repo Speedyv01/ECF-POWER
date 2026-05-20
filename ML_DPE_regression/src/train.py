@@ -36,7 +36,6 @@ def extract_feature_importances(model, feature_names):
 
 
 def train(df):
-
     # -----------------------------
     # Sélection des features
     # -----------------------------
