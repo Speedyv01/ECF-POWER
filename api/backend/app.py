@@ -1,11 +1,12 @@
-import sys
 import json
+import sys
 from pathlib import Path
 
 import joblib
 import pandas as pd
-from api.backend.call_weather_api import get_forecast, merge_weather_sun
 from fastapi import FastAPI
+
+from api.backend.call_weather_api import get_forecast, merge_weather_sun
 
 # --- 1. Gestion des Chemins et Imports ---
 current_file = Path(__file__).resolve()
@@ -94,16 +95,19 @@ def predict(cat: str, data: dict):
 
     return {"prediction": float(prediction)}
 
+
 def get_model_results(cat: str):
     if cat == "DPE":
         file_path = ml_dpe_root / "artifacts" / "metrics" / "DPE_metrics_latest.json"
     elif cat == "conso":
-        file_path = ml_conso_root / "artifacts" / "metrics" / "conso_metrics_latest.json"
+        file_path = (
+            ml_conso_root / "artifacts" / "metrics" / "conso_metrics_latest.json"
+        )
     else:
         return {"error": "Catégorie non valide"}
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)  # Parse JSON into Python object
             return data
     except json.JSONDecodeError as e:
@@ -112,27 +116,33 @@ def get_model_results(cat: str):
         print(f"Error: Could not read file. Details: {e}")
     return None
 
+
 # --- 3. Points d'Entrée (Endpoints) ---
 
 
 @app.get("/")
 def index():
-    return {"message": "API POWER",
-            "docs": "/docs",
-            "santé": "/health",
-            "résultats entraînement": "/ml",}
+    return {
+        "message": "API POWER",
+        "docs": "/docs",
+        "santé": "/health",
+        "résultats entraînement": "/ml",
+    }
 
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
+
 @app.get("/ml")
 def affichage_resultats():
     conso_metrics = get_model_results("conso")
     dpe_metrics = get_model_results("DPE")
-    return {"Résultats de l'entraînement du modèle conso": conso_metrics,
-            "Résultats de l'entraînement du modèle DPE": dpe_metrics}
+    return {
+        "Résultats de l'entraînement du modèle conso": conso_metrics,
+        "Résultats de l'entraînement du modèle DPE": dpe_metrics,
+    }
 
 
 @app.post("/predict_DPE")

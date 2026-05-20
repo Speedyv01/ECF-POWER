@@ -1,4 +1,5 @@
 import numpy as np
+
 from src.ml_conso.features import FEATURES, split_data
 from src.ml_conso.preprocessing import build_preprocessor
 

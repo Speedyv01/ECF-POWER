@@ -1,5 +1,6 @@
 # tests/test_data.py
 import pytest
+
 from src.ml_conso.data import load_data
 
 

@@ -1,4 +1,5 @@
 import pytest
+
 from src.ml_conso.data import load_data
 from src.ml_conso.features import FEATURES, select_features
 

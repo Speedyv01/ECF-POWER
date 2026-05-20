@@ -1,4 +1,5 @@
 from sklearn.ensemble import RandomForestRegressor
+
 from src.ml_conso.train import build_model
 
 

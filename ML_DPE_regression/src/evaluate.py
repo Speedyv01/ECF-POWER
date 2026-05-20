@@ -4,8 +4,8 @@ import joblib
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-from src.config import get_production_model_path
-from src.features import split_features_target
+from ML_DPE_regression.src.config import get_production_model_path
+from ML_DPE_regression.src.features import split_features_target
 
 
 def evaluate(df: pd.DataFrame) -> dict:

@@ -7,7 +7,8 @@ import mlflow
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from src.config import (
+
+from ML_DPE_regression.src.config import (
     DEFAULT_MODEL_NAME,
     METRICS_DIR,
     MLFLOW_EXPERIMENT_NAME,
@@ -15,9 +16,9 @@ from src.config import (
     get_latest_model_info_path,
     get_production_model_path,
 )
-from src.data import load_raw_data
-from src.features import split_features_target
-from src.preprocessing import preprocess_pipeline
+from ML_DPE_regression.src.data import load_raw_data
+from ML_DPE_regression.src.features import split_features_target
+from ML_DPE_regression.src.preprocessing import preprocess_pipeline
 
 # ============================================================
 # 1. Extraction des features importantes

@@ -70,15 +70,16 @@ if st.button("Calculer l'estimation", type="primary"):
 st.space("small")
 st.title(" ⛅ :green[Évolution de la consommation]")
 st.subheader(
-    "Saisissez vos identifiants pour obtenir l'évolution de votre consommation")
+    "Saisissez vos identifiants pour obtenir l'évolution de votre consommation"
+)
 
 conso_annuelle = st.number_input(
     label="Entrez votre conso annuelle (estimée ou réelle) en kWh",
     min_value=0.00,
-    max_value=15000.00,
+    max_value=100000.00,
     value=float(st.session_state.prediction),
     step=0.10,
-    format="%0.2f"
+    format="%0.2f",
 )
 zipcode = st.text_input("📫 Code postal", value="75014")  # CP Observatoire de Paris
 api_key = st.text_input("🔐 Entrez votre clé API OpenWeatherMap", type="password")
