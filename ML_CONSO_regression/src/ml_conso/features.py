@@ -19,9 +19,7 @@ def create_target(df: pd.DataFrame) -> pd.DataFrame:
     jours_semaine = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
     for annee in df["annee"].unique():
-
         for semaine in range(1, 54):
-
             mask = (df["annee"] == annee) & (df["semaine_annee"] == semaine)
 
             df_week = df[mask]
@@ -118,7 +116,6 @@ def build_features(df: pd.DataFrame):
 
 
 def split_data(df):
-
     X = df.drop(columns=[TARGET])
 
     y = df[TARGET]

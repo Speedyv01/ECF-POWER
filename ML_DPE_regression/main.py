@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 
@@ -37,7 +37,6 @@ def extract_feature_importances(model, feature_names):
 
 
 def train(df):
-
     # -----------------------------
     # Sélection des features
     # -----------------------------

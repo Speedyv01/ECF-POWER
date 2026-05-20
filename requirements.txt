@@ -8,6 +8,7 @@ matplotlib==3.9.2
 
 # ML tracking
 mlflow==2.17.2
+databricks-sdk==0.72.0
 protobuf==4.25.5
 
 # API backend
@@ -27,3 +28,4 @@ bandit==1.7.10
 # Utils
 PyYAML==6.0.2
 rich==13.9.4
+httpx==0.27.2
