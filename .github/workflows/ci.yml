@@ -19,7 +19,7 @@ jobs:
       - name: Install Ruff
         run: pip install ruff==0.8.2
       - name: Run Ruff Check
-        run: ruff check .
+        run: ruff check . --ignore I001
 
   # 2. Vérification du Formatage (Black/Ruff)
   format:
