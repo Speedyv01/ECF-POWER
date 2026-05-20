@@ -69,8 +69,17 @@ if st.button("Calculer l'estimation", type="primary"):
 
 st.space("small")
 st.title(" ⛅ :green[Évolution de la consommation]")
-st.subheader("Saisissez vos identifiants pour obtenir l'évolution de votre conso")
+st.subheader(
+    "Saisissez vos identifiants pour obtenir l'évolution de votre consommation")
 
+conso_annuelle = st.number_input(
+    label="Entrez votre conso annuelle (estimée ou réelle) en kWh",
+    min_value=0.00,
+    max_value=15000.00,
+    value=float(st.session_state.prediction),
+    step=0.10,
+    format="%0.2f"
+)
 zipcode = st.text_input("📫 Code postal", value="75014")  # CP Observatoire de Paris
 api_key = st.text_input("🔐 Entrez votre clé API OpenWeatherMap", type="password")
 
@@ -80,10 +89,10 @@ if st.button("Obtenir l'évolution", type="primary"):
         st.error("Veuillez entrer votre clé API OpenWeatherMap.")
     else:
         # Si pas de prediction de conso faite, on affiche la météo
-        if st.session_state.prediction == 0:
+        if conso_annuelle == 0:
             conso_jour = None
         else:
-            conso_jour = st.session_state.prediction / 365
+            conso_jour = conso_annuelle / 365
 
         payload = {"zipcode": zipcode, "api_key": api_key, "conso_jour": conso_jour}
 

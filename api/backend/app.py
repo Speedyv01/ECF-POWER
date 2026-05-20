@@ -1,9 +1,10 @@
 import sys
+import json
 from pathlib import Path
 
 import joblib
 import pandas as pd
-from backend.call_weather_api import get_forecast, merge_weather_sun
+from api.backend.call_weather_api import get_forecast, merge_weather_sun
 from fastapi import FastAPI
 
 # --- 1. Gestion des Chemins et Imports ---
@@ -93,18 +94,45 @@ def predict(cat: str, data: dict):
 
     return {"prediction": float(prediction)}
 
+def get_model_results(cat: str):
+    if cat == "DPE":
+        file_path = ml_dpe_root / "artifacts" / "metrics" / "DPE_metrics_latest.json"
+    elif cat == "conso":
+        file_path = ml_conso_root / "artifacts" / "metrics" / "conso_metrics_latest.json"
+    else:
+        return {"error": "Catégorie non valide"}
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)  # Parse JSON into Python object
+            return data
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON format. Details: {e}")
+    except OSError as e:
+        print(f"Error: Could not read file. Details: {e}")
+    return None
 
 # --- 3. Points d'Entrée (Endpoints) ---
 
 
 @app.get("/")
 def index():
-    return {"message": "API POWER", "docs": "/docs"}
+    return {"message": "API POWER",
+            "docs": "/docs",
+            "santé": "/health",
+            "résultats entraînement": "/ml",}
 
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/ml")
+def affichage_resultats():
+    conso_metrics = get_model_results("conso")
+    dpe_metrics = get_model_results("DPE")
+    return {"Résultats de l'entraînement du modèle conso": conso_metrics,
+            "Résultats de l'entraînement du modèle DPE": dpe_metrics}
 
 
 @app.post("/predict_DPE")
