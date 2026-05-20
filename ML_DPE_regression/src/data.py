@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ML_DPE_regression.src.config import DATA_DIR
+from src.config import DATA_DIR
 
 
 def load_raw_data(filename: str = "dpe_processed_03032026.csv") -> pd.DataFrame:

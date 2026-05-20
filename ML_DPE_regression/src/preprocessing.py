@@ -6,13 +6,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from ML_DPE_regression.src.config import RANDOM_STATE, TEST_SIZE
-from ML_DPE_regression.src.features import (
+from src.config import RANDOM_STATE, TEST_SIZE
+from src.features import (
     CATEGORICAL_FEATURES,
     NUMERIC_FEATURES,
     TOP_FEATURES,
 )
-from ML_DPE_regression.src.preprocessing_mappings import MAPPING_TYPE_GENERATEUR
+from src.preprocessing_mappings import MAPPING_TYPE_GENERATEUR
 
 # ============================================================
 # 1. MAPPINGS CATEGORIELS

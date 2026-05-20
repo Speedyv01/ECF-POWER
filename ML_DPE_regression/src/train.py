@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-from ML_DPE_regression.src.config import (
+from src.config import (
     DEFAULT_MODEL_NAME,
     METRICS_DIR,
     MLFLOW_EXPERIMENT_NAME,
@@ -16,8 +16,8 @@ from ML_DPE_regression.src.config import (
     get_latest_model_info_path,
     get_production_model_path,
 )
-from ML_DPE_regression.src.features import split_features_target
-from ML_DPE_regression.src.preprocessing import preprocess_pipeline
+from src.features import split_features_target
+from src.preprocessing import preprocess_pipeline
 
 # ============================================================
 # 1. Extraction des features importantes
@@ -75,6 +75,12 @@ def train(df):
     print(f"   → R²   = {metrics['r2']:.4f}")
     print(f"     MAE  = {metrics['mae']:.4f}")
     print(f"     RMSE = {metrics['rmse']:.4f}")
+
+    metrics_path = METRICS_DIR / "DPE_metrics_latest.json"
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=4, ensure_ascii=False)
+
+    print(f"📊 Metrics sauvegardées dans : {metrics_path}")
 
     # -----------------------------
     # Feature importances

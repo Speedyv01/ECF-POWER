@@ -22,7 +22,7 @@ TEST_SIZE: float = 0.2
 RANDOM_STATE: int = 42
 
 # Noms par défaut
-DEFAULT_MODEL_NAME: str = "random_forest"
+DEFAULT_MODEL_NAME: str = "DPE_model"
 DEFAULT_PREPROCESSOR_NAME: str = "preprocessor"
 PRODUCTION_MODEL_FILENAME: str = "DPE_model_latest.pkl"
 
