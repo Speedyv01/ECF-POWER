@@ -3,6 +3,7 @@ from pathlib import Path
 import joblib
 import mlflow
 import mlflow.sklearn
+
 from src.ml_conso.data import load_data
 from src.ml_conso.evaluate import evaluate_model
 from src.ml_conso.features import select_features, split_data

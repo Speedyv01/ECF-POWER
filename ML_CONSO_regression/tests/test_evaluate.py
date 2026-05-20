@@ -1,4 +1,5 @@
 from sklearn.dummy import DummyRegressor
+
 from src.ml_conso.evaluate import evaluate_model
 from src.ml_conso.features import split_data
 

@@ -1,16 +1,16 @@
 {
     "model_name": "random_forest",
-    "model_path": "C:\\Users\\Thomi\\Desktop\\Programming\\M2i\\ECF\\GitHub\\ECF-POWER\\ML_DPE_regression\\artifacts\\models\\DPE_model_latest.pkl",
+    "model_path": "C:\\Users\\gnove\\Desktop\\GITHUB_ML_CONSO2\\ECF-POWER\\ML_DPE_regression\\artifacts\\models\\DPE_model_latest.pkl",
     "best_metrics": {
         "r2": 0.8818663065738972,
         "mae": 1224.9751334116597,
-        "rmse": 2525.7506294016166
+        "rmse": 2525.750629401617
     },
     "all_metrics": {
         "random_forest": {
             "r2": 0.8818663065738972,
             "mae": 1224.9751334116597,
-            "rmse": 2525.7506294016166
+            "rmse": 2525.750629401617
         }
     },
     "feature_importances": {

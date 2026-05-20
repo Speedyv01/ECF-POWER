@@ -1,6 +1,12 @@
 import importlib
 import sys
 import types
+from pathlib import Path
+
+current_file = Path(__file__).resolve()
+repo_root = current_file.parents[2]
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
 
 
 def make_dummy_streamlit():
@@ -36,6 +42,7 @@ def make_dummy_streamlit():
     st.write = no_op
     st.selectbox = lambda *args, **kwargs: args[1][0] if len(args) > 1 else None
     st.slider = lambda *args, **kwargs: kwargs.get("value", 0)
+    st.number_input = lambda *args, **kwargs: kwargs.get("value", 0.0)
     st.text_input = lambda *args, **kwargs: kwargs.get("value", "")
     st.button = lambda *args, **kwargs: False
 
@@ -50,3 +57,7 @@ def test_streamlit_app_imports_without_error(monkeypatch):
 
     assert hasattr(module, "zipcode")
     assert module.zipcode == "75014"
+    assert hasattr(module, "api_key")
+    assert module.api_key == ""
+    assert hasattr(module, "conso_annuelle")
+    assert module.conso_annuelle == 0.0

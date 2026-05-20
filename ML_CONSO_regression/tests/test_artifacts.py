@@ -1,6 +1,7 @@
 import json
 
 from sklearn.dummy import DummyRegressor
+
 from src.ml_conso.features import FEATURES
 from src.ml_conso.pipeline import (
     activate_model_version,
