@@ -1,18 +1,8 @@
-import logging
-import os
 from datetime import datetime
 
 import pandas as pd
 import requests
 import streamlit as st
-
-logger = logging.getLogger(__name__)
-
-BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
-PREDICT_DPE_URL = f"{BACKEND_URL}/predict_DPE"
-PREDICT_CONSO_URL = f"{BACKEND_URL}/predict_conso"
-
-logger.info("Demarrage de Streamlit. BACKEND_URL=%s", BACKEND_URL)
 
 if "prediction" not in st.session_state:
     st.session_state.prediction = 0
@@ -64,21 +54,20 @@ if st.button("Calculer l'estimation", type="primary"):
     }
 
     try:
-        logger.info("Envoi de la requete HTTP de prediction vers %s", PREDICT_DPE_URL)
-        response = requests.post(PREDICT_DPE_URL, json=payload, timeout=5)
+        response = requests.post(
+            "http://127.0.0.1:8000/predict_DPE", json=payload, timeout=5
+        )
         response.raise_for_status()
         prediction = response.json()["prediction"]
         # Stocker la prédiction dans session_state
         st.session_state.prediction = prediction
         st.success(f"### Conso annuelle estimée : {prediction:.2f} kWh")
     except requests.exceptions.ConnectionError:
-        logger.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
         st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
     except Exception as e:
-        logger.error("Une erreur est survenue : %s", e)
         st.error(f"Une erreur est survenue : {e}")
 
-st.space("small")
+st.write("")
 st.title(" ⛅ :green[Évolution de la consommation]")
 st.subheader(
     "Saisissez vos identifiants pour obtenir l'évolution de votre consommation"
@@ -109,10 +98,9 @@ if st.button("Obtenir l'évolution", type="primary"):
         payload = {"zipcode": zipcode, "api_key": api_key, "conso_jour": conso_jour}
 
         try:
-            logger.info(
-                "Envoi de la requete HTTP de prediction vers %s", PREDICT_CONSO_URL
+            response = requests.post(
+                "http://127.0.0.1:8000/predict_conso", json=payload, timeout=5
             )
-            response = requests.post(PREDICT_CONSO_URL, json=payload, timeout=15)
             response.raise_for_status()
             prediction = response.json()["predictions"]
             ville = response.json()["city_name"]
@@ -135,10 +123,6 @@ if st.button("Obtenir l'évolution", type="primary"):
             st.success("### Conso à venir dans les 6 prochains jours :")
             st.success(f"{df['Conso'].sum():.2f} kWh")
         except requests.exceptions.ConnectionError:
-            logger.error(
-                "Erreur : Impossible de contacter le serveur backend (FastAPI)."
-            )
             st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
         except Exception as e:
-            logger.error("Une erreur est survenue : %s", e)
             st.error(f"Une erreur est survenue : {e}")

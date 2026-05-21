@@ -10,5 +10,5 @@
     ],
     "target": "evo_conso",
     "format": "joblib",
-    "usage": "Load in the backend with joblib, expose predictions through an API for the frontend."
+    "usage": "Load in the backend with joblib,\n        expose predictions through an API for the frontend."
 }

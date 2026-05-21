@@ -74,7 +74,7 @@ def load_latest_model(artifact_dir="artifacts"):
 
 def export_model_contract(feature_names, artifact_dir="artifacts"):
     artifact_dir = Path(artifact_dir)
-    contract_path = artifact_dir / "model_contract.json"
+    contract_path = artifact_dir / "conso_model_contract.json"
 
     contract = {
         "model_path": "artifacts/models/conso_model_latest.joblib",
