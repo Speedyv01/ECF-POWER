@@ -75,7 +75,7 @@ jobs:
 # 5. Build des images Docker pour valider la containerisation
   docker-build:
     runs-on: ubuntu-latest
-    needs: 
+    needs: [structure]
     steps:
       - uses: actions/checkout@v4
       - name: Build Backend and Frontend Images
