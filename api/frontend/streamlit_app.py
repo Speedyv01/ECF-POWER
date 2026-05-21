@@ -65,9 +65,7 @@ if st.button("Calculer l'estimation", type="primary"):
 
     try:
         logger.info("Envoi de la requete HTTP de prediction vers %s", PREDICT_DPE_URL)
-        response = requests.post(
-            PREDICT_DPE_URL, json=payload, timeout=5
-        )
+        response = requests.post(PREDICT_DPE_URL, json=payload, timeout=5)
         response.raise_for_status()
         prediction = response.json()["prediction"]
         # Stocker la prédiction dans session_state
@@ -111,11 +109,10 @@ if st.button("Obtenir l'évolution", type="primary"):
         payload = {"zipcode": zipcode, "api_key": api_key, "conso_jour": conso_jour}
 
         try:
-            logger.info("Envoi de la requete HTTP de prediction vers %s",
-                        PREDICT_CONSO_URL)
-            response = requests.post(
-                PREDICT_CONSO_URL, json=payload, timeout=5
+            logger.info(
+                "Envoi de la requete HTTP de prediction vers %s", PREDICT_CONSO_URL
             )
+            response = requests.post(PREDICT_CONSO_URL, json=payload, timeout=15)
             response.raise_for_status()
             prediction = response.json()["predictions"]
             ville = response.json()["city_name"]
@@ -138,7 +135,9 @@ if st.button("Obtenir l'évolution", type="primary"):
             st.success("### Conso à venir dans les 6 prochains jours :")
             st.success(f"{df['Conso'].sum():.2f} kWh")
         except requests.exceptions.ConnectionError:
-            logger.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
+            logger.error(
+                "Erreur : Impossible de contacter le serveur backend (FastAPI)."
+            )
             st.error("Erreur : Impossible de contacter le serveur backend (FastAPI).")
         except Exception as e:
             logger.error("Une erreur est survenue : %s", e)
