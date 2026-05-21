@@ -21,6 +21,7 @@ streamlit==1.40.2
 
 # Tests / quality
 pytest==8.3.4
+httpx==0.27.2
 ruff==0.8.2
 black==24.10.0
 bandit==1.7.10
@@ -28,4 +29,3 @@ bandit==1.7.10
 # Utils
 PyYAML==6.0.2
 rich==13.9.4
-httpx==0.27.2
