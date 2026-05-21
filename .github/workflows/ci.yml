@@ -72,3 +72,18 @@ jobs:
         env:
           PYTHONPATH: .:ML_CONSO_regression
 
+# 5. Build des images Docker pour valider la containerisation
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [structure]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Backend and Frontend Images
+        run:
+          mkdir -p ML_conso_regression/artifacts/models
+          docker build -touch ML_conso_regression/artifacts/models/conso_model_latest.joblib
+          docker build -touch ML_DPE_regression/artifacts/models/DPE_model_latest.pkl
+          docker build -t power-backend -f api/backend/Dockerfile .
+          docker build -t power-frontend -f api/frontend/Dockerfile .
+
+
