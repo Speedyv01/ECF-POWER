@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parent
 DATA_FILENAME = "Merge_conso_meteo_soleil_090426.csv"
 
 

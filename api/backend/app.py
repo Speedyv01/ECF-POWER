@@ -160,19 +160,19 @@ def predict_conso(data: dict):
         conso_jour = data["conso_jour"]
 
     # 1. Récupération prévis météo + durée ensoleillement
-    forecast = get_forecast(data["zipcode"], data["api_key"])
-    city_name = forecast["city"]["name"]
-    meteo = merge_weather_sun(forecast)
+    forecast = get_forecast(data["zipcode"], data["api_key"]) # forecast dictionnaire contenant les prévisions météo pour le code postal donné
+    city_name = forecast["city"]["name"] # nom de la ville correspondant au code postal donné, extrait du dictionnaire forecast
+    meteo = merge_weather_sun(forecast) # fusionne les données météo et d'ensoleillement pour les 5 jours à venir, ndas contenant les informations météorologiques et d'ensoleillement pour chaque jour de la période spécifiée.
 
     # 2. Prédictions itératives
     # On Transforme le dataframe en dictionnaire pour le parcourir
     meteo_dict_list = []
-    for _, row in meteo.iterrows():
+    for _, row in meteo.iterrows(): # chaque ligne du dataframe meteo est transformée en dictionnaire pour être utilisée comme entrée pour la fonction de prédiction
         ligne = row.to_dict()
         # Prediction désactivé pour les tests
         res_predict = predict("conso", ligne)
         # res_predict = {"prediction": 1}  # Ligne à supprimer en prod
-        ligne["Conso_Estimee"] = (1 - res_predict["prediction"]) * conso_jour
+        ligne["Conso_Estimee"] = (1 - res_predict["prediction"]) * conso_jour 
 
         meteo_dict_list.append(ligne)
 

@@ -78,7 +78,7 @@ if st.button("Calculer l'estimation", type="primary"):
         logger.error("Une erreur est survenue : %s", e)
         st.error(f"Une erreur est survenue : {e}")
 
-st.space("small")
+st.write("")
 st.title(" ⛅ :green[Évolution de la consommation]")
 st.subheader(
     "Saisissez vos identifiants pour obtenir l'évolution de votre consommation"

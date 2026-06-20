@@ -5,11 +5,11 @@ from pathlib import Path
 import joblib
 from sklearn.pipeline import Pipeline
 
-from src.ml_conso.data import load_data
-from src.ml_conso.evaluate import evaluate_model
-from src.ml_conso.features import select_features, split_data
-from src.ml_conso.preprocessing import build_preprocessor
-from src.ml_conso.train import build_model
+from .data import load_data
+from .evaluate import evaluate_model
+from .features import select_features, split_data
+from .preprocessing import build_preprocessor
+from .train import build_model
 
 
 def build_pipeline():

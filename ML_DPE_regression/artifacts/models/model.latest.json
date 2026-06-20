@@ -1,6 +1,6 @@
 {
     "model_name": "random_forest",
-    "model_path": "C:\\Users\\chris\\Desktop\\ml-filrouge-project - v3\\ML_DPE_regression\\artifacts\\models\\DPE_model_latest.pkl",
+    "model_path": "C:\\Users\\chris\\Desktop\\Projet_filrouge_final\\ML_DPE_regression\\artifacts\\models\\DPE_model_latest.pkl",
     "best_metrics": {
         "r2": 0.8818663065738972,
         "mae": 1224.9751334116595,

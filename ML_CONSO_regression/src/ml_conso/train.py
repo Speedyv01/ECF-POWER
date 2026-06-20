@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-from src.ml_conso.evaluate import evaluate_model
+from .evaluate import evaluate_model
 
 
 def build_model():

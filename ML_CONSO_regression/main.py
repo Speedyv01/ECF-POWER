@@ -4,25 +4,25 @@ import joblib
 import mlflow
 import mlflow.sklearn
 
-from src.ml_conso.data import load_data
-from src.ml_conso.evaluate import evaluate_model
-from src.ml_conso.features import select_features, split_data
-from src.ml_conso.pipeline import (
+from .src.ml_conso.data import load_data
+from .src.ml_conso.evaluate import evaluate_model
+from .src.ml_conso.features import select_features, split_data
+from .src.ml_conso.pipeline import (
     activate_model_version,
     build_pipeline,
     export_model_contract,
     save_model_version,
 )
-from src.ml_conso.train import log_experiment
+from .src.ml_conso.train import log_experiment
 
-
+# Fonction d'aide pour afficher des en-têtes de section de manière cohérente dans la console, ce qui améliore la lisibilité des logs lors de l'exécution du pipeline.
 def log_step(message):
     """Helper to print section headers consistently."""
     print("=" * 60)
     print(message)
     print("=" * 60)
 
-
+# Fonction principale pour exécuter le pipeline complet, qui inclut le chargement des données, la sélection des features, la division des données en ensembles d'entraînement et de test, la construction du pipeline, l'entraînement du modèle, l'évaluation des performances et le retour des résultats.
 def main():
     log_step("CHARGEMENT DES DONNEES")
 
@@ -44,9 +44,9 @@ def main():
 
     pipeline = build_pipeline()
 
-    mlflow.set_experiment("electricity_forecasting")
+    mlflow.set_experiment("electricity_forecasting") #mlflow.set_experiment pour définir le nom de l'expérience MLflow sous laquelle les résultats seront enregistrés, ce qui permet d'organiser et de suivre les différentes expériences de manière structurée.
 
-    with mlflow.start_run():
+    with mlflow.start_run(): #mlflow.start_run pour démarrer une nouvelle exécution MLflow, ce qui permet d'enregistrer les paramètres, les métriques et les artefacts associés à cette exécution de manière isolée et traçable.
         log_step("ENTRAINEMENT")
 
         pipeline.fit(X_train, y_train)
