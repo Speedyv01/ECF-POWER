@@ -43,3 +43,7 @@ projet_filrouge_final/Include/
 projet_filrouge_final/etc/
 projet_filrouge_final/share/
 projet_filrouge_final/pyvenv.cfg
+
+# Ignorer les csv
+ML_DPE_regression/data/*.csv
+ML_CONSO_regression/src/ml_conso/*.csv
