@@ -10,14 +10,12 @@ __pycache__/
 # Données et modèles locaux
 *.pkl
 *.joblib
-*.csv
 
 # Autoriser les données de test
 !tests/data/
 !tests/data/*.csv
-install_output.txt
 
-#ML Artifacts 
+# ML Artifacts 
 ML_CONSO_regression/mlruns/
 ML_DPE_regression/mlruns/
 mlruns/
@@ -32,7 +30,20 @@ mlruns/
 # Système / IDE
 .vscode/
 .DS_Store
-.venv/
 .pytest_cache/
 .ruff_cache/
+
+# Artifacts
 artifacts/*.joblib
+
+# Ignorer l'environnement virtuel dans projet_filrouge_final
+projet_filrouge_final/Lib/
+projet_filrouge_final/Scripts/
+projet_filrouge_final/Include/
+projet_filrouge_final/etc/
+projet_filrouge_final/share/
+projet_filrouge_final/pyvenv.cfg
+
+# Ignorer les csv
+ML_DPE_regression/data/*.csv
+ML_CONSO_regression/src/ml_conso/*.csv
